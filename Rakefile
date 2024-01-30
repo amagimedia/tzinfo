@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rubygems/package_task'
 require 'fileutils'
 require 'rake/testtask'
+# test
 
 # Ignore errors loading rdoc/task (the rdoc tasks will be excluded if
 # rdoc is unavailable).

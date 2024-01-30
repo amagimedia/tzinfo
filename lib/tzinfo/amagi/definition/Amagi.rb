@@ -1,6 +1,6 @@
 module TZInfo
   module Amagi
-    module Definitionamagitimezone
+    module Definition
       module Amagi
         include TimezoneDefinition
         d = Date.current

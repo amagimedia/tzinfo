@@ -64,9 +64,9 @@ module TZInfo
 
         require_index('timezones')
         require_index('countries')
-        require_data_amagi('customtimezone')
+        require_data_amagi('timezone')
 
-        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones + Amagi::Customtimezone.data_timezones
+        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones + Amagi::Timezone.data_timezones
         @linked_timezone_identifiers = Data::Indexes::Timezones.linked_timezones
         @countries = Data::Indexes::Countries.countries
         @country_codes = @countries.keys.sort!.freeze
@@ -101,7 +101,7 @@ module TZInfo
         begin
           if split_identifier == ["Amagi"]
             require_definition_amagi("Amagi")
-            n = Amagi::Definitionamagitimezone
+            n = Amagi::Definition
             split_identifier.each {|part| n = n.const_get(part) }
             n.get
           else
@@ -132,7 +132,7 @@ module TZInfo
       end
 
       def require_definition_amagi(identifier)
-        require_data_amagi('defintionamagitimezone', *identifier)
+        require_data_amagi('defintion', *identifier)
       end
 
       # Requires an index by its name.

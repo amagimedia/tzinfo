@@ -1,11 +1,13 @@
 version: 2.1
+
 jobs:
   tzinfo_build_and_push_gem:
     working_directory: ~/tzinfo
+    resource_class: small
     docker:
       - image: ruby:3.0
     steps:
-      - checkout:
+      - checkout
 
       # Build gem
       - run:

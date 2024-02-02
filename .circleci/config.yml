@@ -1,22 +1,24 @@
-tzinfo_build_and_push_gem:
-  working_directory: ~/tzinfo
-  docker:
-    - image: ruby:3.0
-  steps:
-    - checkout:
+version: 2.1
+jobs:
+  tzinfo_build_and_push_gem:
+    working_directory: ~/tzinfo
+    docker:
+      - image: ruby:3.0
+    steps:
+      - checkout:
 
-    # Build gem
-    - run:
-        name: Build gem
-        command: |
-          echo "export GEM_FILE=$(gem build | sed -n "s/^.*File: \(.*\.gem\)$/\1/p")" >> $BASH_ENV
+      # Build gem
+      - run:
+          name: Build gem
+          command: |
+            echo "export GEM_FILE=$(gem build | sed -n "s/^.*File: \(.*\.gem\)$/\1/p")" >> $BASH_ENV
 
-    # Push gem to ruby gems github repository
-    - run:
-        name: Push gem to github rubygems repository
-        command: |
-          export GEM_HOST_API_KEY="Bearer $GITHUB_TOKEN"
-          gem push ${GEM_FILE}
+      # Push gem to ruby gems github repository
+      - run:
+          name: Push gem to github rubygems repository
+          command: |
+            export GEM_HOST_API_KEY="Bearer $GITHUB_TOKEN"
+            gem push ${GEM_FILE}
 
 workflows:
   version: 2.1

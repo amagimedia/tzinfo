@@ -1,12 +1,10 @@
 version: 2.1
-orbs:
-  ruby: circleci/ruby@3.2
 jobs:
   tzinfo_build_and_push_gem:
     working_directory: ~/tzinfo
     resource_class: small
     docker:
-      - image: ruby:3.2
+      - image: circleci/ruby:2.7
     steps:
       - checkout
 

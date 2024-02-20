@@ -31,7 +31,7 @@ module TZInfo
         #   `String#<=>`.
         def data_timezones
           unless @data_timezones.frozen?
-            @data_timezones = @data_timezones.sort.freeze
+            @data_timezones = @data_timezones.sort
           end
           @data_timezones
         end

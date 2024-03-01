@@ -64,8 +64,8 @@ module TZInfo
 
         require_index('timezones')
         require_index('countries')
-        require_amagi('customtime')
-        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones +  Amagi::Customtime.data_timezones
+        require_amagi('custom_time')
+        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones +  Amagi::CustomTime.data_timezones
         @linked_timezone_identifiers = Data::Indexes::Timezones.linked_timezones
         @countries = Data::Indexes::Countries.countries
         @country_codes = @countries.keys.sort!.freeze

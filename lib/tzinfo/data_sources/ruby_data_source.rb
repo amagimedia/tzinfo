@@ -54,10 +54,18 @@ module TZInfo
           end
         end
 
+        data_file = File.join('', 'tzinfo', 'amagi.rb')
+        path = $".reverse_each.detect {|p| p.end_with?(data_file) }
+        if path
+          @base_path_location = RubyCoreSupport.untaint(File.join(File.dirname(path), 'amagi' ))
+        else
+          @base_path_location = 'tzinfo/amagi'
+        end
+
         require_index('timezones')
         require_index('countries')
-
-        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones
+        require_amagi('custom_time')
+        @data_timezone_identifiers = Data::Indexes::Timezones.data_timezones +  Amagi::CustomTime.data_timezones
         @linked_timezone_identifiers = Data::Indexes::Timezones.linked_timezones
         @countries = Data::Indexes::Countries.countries
         @country_codes = @countries.keys.sort!.freeze
@@ -90,11 +98,18 @@ module TZInfo
         split_identifier = valid_identifier.gsub(/-/, '__m__').gsub(/\+/, '__p__').split('/')
 
         begin
-          require_definition(split_identifier)
+          if split_identifier == ["Amagi"]
+            require_def_amagi("Amagi")
+            n = Amagi::Defamagi
+            split_identifier.each {|part| n = n.const_get(part) }
+            n.get
+          else
+            require_definition(split_identifier)
+            m = Data::Definitions
 
-          m = Data::Definitions
-          split_identifier.each {|part| m = m.const_get(part) }
-          m.get
+            split_identifier.each {|part| m = m.const_get(part) }
+            m.get
+          end
         rescue LoadError, NameError => e
           raise InvalidTimezoneIdentifier, "#{e.message.encode(Encoding::UTF_8)} (loading #{valid_identifier})"
         end
@@ -115,6 +130,10 @@ module TZInfo
         require_data('definitions', *identifier)
       end
 
+      def require_def_amagi(identifier)
+        require_amagi('defamagi', *identifier)
+      end
+
       # Requires an index by its name.
       #
       # @param name [String] an index name.
@@ -129,6 +148,9 @@ module TZInfo
         require(File.join(@base_path, *file))
       end
 
+      def require_amagi(*file)
+        require(File.join(@base_path_location, *file))
+      end
       # @return [String] a `String` containing TZInfo::Data version infomation
       #   for inclusion in the #to_s and #inspect output.
       def version_info

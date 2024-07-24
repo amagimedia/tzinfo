@@ -19,7 +19,7 @@ module TZInfo
           if (switch_timezone).to_s == "AST"
             tz.offset :o100, 23400, 0, :ADST # 6:30
             tz.offset :o101, 19800, 0, :AST  # 5:30
-            tz.transition d.year, d.month, :o100, switch_over_epoch
+            tz.transition d.year, d.month, :o101, switch_over_epoch
           elsif (switch_timezone).to_s == "ADST"
             tz.offset :o100, 19800, 0, :AST  # 5:30
             tz.offset :o101, 23400, 0, :ADST # 6:30
